@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Google.Protobuf" Version="3.24.3" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server" Version="2.57.0" />
+	  <PackageReference Include="Grpc.Tools" Version="2.58.0">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.6" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+	
+	<ItemGroup>
+		<!--<Protobuf ProtoRoot=".." Link="Protos/Orders.proto" Include="../Protos/Orders.proto" GrpcServices="Server" />-->
+		<Protobuf ProtoRoot=".." Link="Protos/Payment.proto" Include="../Protos/Payment.proto;../Protos/CustomerOrder.proto" GrpcServices="Client" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Protos\" />
+	</ItemGroup>
+</Project>
