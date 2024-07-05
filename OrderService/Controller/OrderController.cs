@@ -1,5 +1,4 @@
-﻿
-using Grpc.Net.Client;
+﻿using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Models;
 using OrderService.Models.ResponseData;

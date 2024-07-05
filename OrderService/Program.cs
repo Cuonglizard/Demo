@@ -23,6 +23,7 @@ if (builder.Environment.IsDevelopment() || RuntimeInformation.IsOSPlatform(OSPla
         return httpHandler;
     });
 }
+builder.AddApplicationServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

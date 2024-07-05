@@ -23,6 +23,11 @@
 		<Protobuf ProtoRoot=".." Link="Protos/Payment.proto" Include="../Protos/Payment.proto;../Protos/CustomerOrder.proto" GrpcServices="Client" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Application\Commands\" />
+	  <Folder Include="Application\Models\" />
 	  <Folder Include="Protos\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
 	</ItemGroup>
 </Project>

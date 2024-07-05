@@ -25,6 +25,9 @@
     <Folder Include="Controllers\" />
     <Folder Include="Protos\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<Protobuf ProtoRoot=".." Link="Protos/Payment.proto" Include="../Protos/Payment.proto;../Protos/CustomerOrder.proto" GrpcServices="Server" />
