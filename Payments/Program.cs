@@ -1,13 +1,16 @@
 using System.Runtime.InteropServices;
+using Payments.Application.EventHandlers;
 
 using Common.Protobuf;
-
+using MicroRabbit.Domain.Core.Bus;
+using Payments.Application.Events;
 using Microsoft.EntityFrameworkCore;
 
 using Payments.Models;
 using Payments.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddApplicationServices();
 
 // Add services to the container.
 // NOTE: Be aware of this, could contain sensitive data!
@@ -18,6 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +30,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var eventBus = services.GetRequiredService<IEventBus>();
 
+    eventBus.Subscribe<ORDEREvent, ORDEREventHandler>();
+    // ??ng ký các s? ki?n khác n?u c?n
+}
 app.MapGrpcService<PaymentRpcService>();
 
 // app.UseHttpsRedirection();

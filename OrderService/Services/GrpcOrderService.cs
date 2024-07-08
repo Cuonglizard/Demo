@@ -1,10 +1,16 @@
 using Grpc.Core;
 using Common.Protobuf;
-
+using Orders.Application.Models;
 using CustomerOrder = Orders.Models.CustomerOrder;
 
 using OrderService.Models;
 using static Common.Protobuf.Payments;
+using Orders.Application.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
+using Google.Api;
+using Orders.Infrastructure;
+using Orders.Infrastructure.Enities;
 
 namespace OrderService.Services;
     public interface IGrpcOrdersService
@@ -15,11 +21,16 @@ namespace OrderService.Services;
     {
         private readonly ILogger<GrpcOrderService> _logger;
         private readonly Payments.PaymentsClient _paymentClient;
+        private readonly IMediator _mediator;
+        private readonly AppDbContext _context;
 
-    public GrpcOrderService(ILogger<GrpcOrderService> logger, Payments.PaymentsClient paymentClient)
+
+    public GrpcOrderService(ILogger<GrpcOrderService> logger, Payments.PaymentsClient paymentClient, IMediator mediator, AppDbContext context)
     {
-            _logger = logger;
-           _paymentClient = paymentClient;
+        _logger = logger;
+        _mediator = mediator;
+        _paymentClient = paymentClient;
+        _context = context;
 
     }
     public async Task<Order> CreateOrderAsync(CustomerOrder customerOrder)
@@ -31,6 +42,19 @@ namespace OrderService.Services;
                 Quantity = customerOrder.Quantity,
                 Status = "Created",
             };
+        var dateTimeNow = DateTime.Now;
+        var newProduct = new PRODUCTS
+        {
+            ORDERID = customerOrder.OrderId.ToString(),
+            EMAIL = "cuong25081@gmail.com",
+            LOG = $"??t",
+            ACCOUNT = (float)customerOrder.Amount,
+            DATECREATE = DateTime.Now
+        };
+
+        _context.PRODUCTS.Add(newProduct);
+
+        _context.SaveChanges();
 
             try
             {
@@ -49,9 +73,20 @@ namespace OrderService.Services;
                         Quantity = customerOrder.Quantity,
                     },
                 };
+                
+            var result = await _paymentClient.NewOrderAsync(orderRequest);
+            var data = new CreateOrder
+            {
+                IdUser = 1,
+                OrderId = order.Id,
+                Email = "tranduccuong25082001@gmail.com",
+                Log = "Create Order",
+                Account = 200000,
+                DateCreate = DateTime.Now
+            };
+            _mediator.Send(new ORDERCommand(data));
 
-                var result = await _paymentClient.NewOrderAsync(orderRequest);
-                if (!result.Success)
+            if (!result.Success)
                 {
                     _logger.LogError("Error when creating paymeny: {} -> {}", customerOrder);
 

@@ -1,0 +1,39 @@
+﻿@page "/"
+
+
+<PageTitle>Home</PageTitle>
+
+
+
+<div class="form-group">
+    <label for="username">Tên đăng nhập:</label>
+    <input type="text" id="username" class="form-control" @bind="username">
+</div>
+
+<div class="form-group">
+    <label for="password">Mật khẩu:</label>
+    <input type="password" id="password" class="form-control" @bind="password">
+</div>
+
+<button class="btn btn-primary" @onclick="Login">Đăng nhập</button>
+
+@code {
+    private string username;
+    private string password;
+
+    private void Login()
+    {
+        // Xử lý logic đăng nhập ở đây
+        // Ví dụ: Kiểm tra tên đăng nhập và mật khẩu, sau đó chuyển hướng đến trang chính của ứng dụng
+        if (username == "admin" && password == "admin")
+        {
+            // Chuyển hướng đến trang chính
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            // Xử lý khi đăng nhập không thành công, ví dụ: hiển thị thông báo lỗi
+            Console.WriteLine("Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.");
+        }
+    }
+}

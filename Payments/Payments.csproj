@@ -16,17 +16,23 @@
 	  <PackageReference Include="Google.Protobuf" Version="3.24.3" />
 	  <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
 	  <PackageReference Include="Grpc.AspNetCore.Server" Version="2.57.0" />
+	  <PackageReference Include="MediatR" Version="9.0.0" />
 	  <PackageReference Include="Grpc.Tools" Version="2.58.0">
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
-	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />  </ItemGroup>
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Protos\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\MicroRabbit.Domain.Core\MicroRabbit.Domain.Core.csproj" />
+    <ProjectReference Include="..\MicroRabbit.Infra.Bus\MicroRabbit.Infra.Bus.csproj" />
+    <ProjectReference Include="..\Payments.Application\Payments.Application.csproj" />
+    <ProjectReference Include="..\Payments.Infrastructure\Payments.Infrastructure.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

@@ -14,8 +14,11 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
+	  <PackageReference Include="MediatR" Version="9.0.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.6" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+
   </ItemGroup>
 	
 	<ItemGroup>
@@ -23,11 +26,11 @@
 		<Protobuf ProtoRoot=".." Link="Protos/Payment.proto" Include="../Protos/Payment.proto;../Protos/CustomerOrder.proto" GrpcServices="Client" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Application\Commands\" />
-	  <Folder Include="Application\Models\" />
 	  <Folder Include="Protos\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+	  <ProjectReference Include="..\MicroRabbit.Domain.Core\MicroRabbit.Domain.Core.csproj" />
+	  <ProjectReference Include="..\MicroRabbit.Infra.Bus\MicroRabbit.Infra.Bus.csproj" />
+	  <ProjectReference Include="..\Orders.Infrastructure\Orders.Infrastructure.csproj" />
 	</ItemGroup>
 </Project>

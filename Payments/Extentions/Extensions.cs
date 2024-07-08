@@ -1,17 +1,32 @@
-﻿
+﻿using Payments.Application.EventHandlers;
+using MediatR;
+using MicroRabbit.Domain.Core.Bus;
+using Payments.Application.Events;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
+        var services = builder.Services;
 
-        //builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();
+        services.AddSingleton<MicroRabbit.Domain.Core.Bus.IEventBus, MicroRabbit.Infra.Bus.RabbitMQBus>();
 
-        //builder.Services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
+        //Subscription
+        services.AddTransient<ORDEREventHandler>();
 
-        //builder.AddRabbitMqEventBus("eventbus")
-        //       .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
-        //       .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
+        //DI for RabbitMQ
 
+        services.AddTransient<IEventHandler<ORDEREvent>, ORDEREventHandler>();
+
+        services.AddHttpClient();
+
+        services.AddMediatR(typeof(Program));
+
+    }
+
+    private static void AddEventBusSubscriptions(IEventBus eventBus)
+    {
+        eventBus.Subscribe<ORDEREvent, ORDEREventHandler>();
     }
 }
