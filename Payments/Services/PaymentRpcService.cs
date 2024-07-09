@@ -7,17 +7,23 @@ using Payments.Models;
 using Payment = Models.Payment;
 using Payments.Infrastructure;
 using Payments.Infrastructure.Enities;
+using System.Text;
+using System.Text.Json;
+using System.Net.Http.Headers;
 
 public class PaymentRpcService : Payments.PaymentsBase
 {
     private readonly ILogger<PaymentRpcService> _logger;
     private readonly AppDbContext _context;
+    private readonly IHttpClientFactory _httpClientFactory;
 
 
-    public PaymentRpcService(ILogger<PaymentRpcService> logger, AppDbContext context)
+
+    public PaymentRpcService(ILogger<PaymentRpcService> logger, AppDbContext context, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
         _context = context;
+        _httpClientFactory = httpClientFactory;
     }
 
     public override async Task<NewOrderResponse> NewOrder(NewOrderRequest request, Grpc.Core.ServerCallContext context)
@@ -52,7 +58,24 @@ public class PaymentRpcService : Payments.PaymentsBase
         };
         
         _logger.LogInformation("information order: {}", payment);
+        var webhookUrl = "https://localhost:7031/webhook";
+        var httpClient = _httpClientFactory.CreateClient();
 
+        // T?o n?i dung JSON
+        var jsonBody = new
+        {
+            Header = "Header",
+            Body = "HelloWebHook"
+        };
+
+        // Chuy?n ??i object thành JSON
+        var content = new StringContent(JsonSerializer.Serialize(jsonBody), Encoding.UTF8, "application/json");
+
+        // Thêm Header Authorization
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("APIKEY");
+
+        // G?i yêu c?u POST
+        var response = await httpClient.PostAsync(webhookUrl, content);
         try
         {
             var paymentRequest = new NewPaymentRequest

@@ -165,7 +165,7 @@ public class GrpcOrderService : IGrpcOrdersService
             {
                 OrderId = payment.ORDERID.ToString(),
                 Amount = payment.AMOUNT,
-                ProductName = "San Pham",
+                ProductName = _context.ITEM.FirstOrDefault(ITEM => ITEM.ID == payment.ORDERID).NAME,
                 DatePayment = payment.DATEPAYMENT,
             }).ToList();
 
