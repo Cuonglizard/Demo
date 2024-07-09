@@ -3,7 +3,7 @@
 @rendermode InteractiveServer
 @using MudBlazor
 @inject ISnackbar Snackbar
-
+@inject IJSRuntime JSRuntime
 @inject HttpClient Http
 <PageTitle>Home</PageTitle>
 
@@ -72,11 +72,11 @@
             var response = await Http.PostAsJsonAsync("https://localhost:7054/api/Order/addToCart", requestData);
             if (response.IsSuccessStatusCode)
             {
-                Snackbar.Add("Thêm vào gỏ hàng thành công!", Severity.Success);
+                await JSRuntime.InvokeVoidAsync("showAlert", "Thêm vào giỏ hàng thành công!");
             }
             else
             {
-                Snackbar.Add($"Thêm vào giỏ hàng thất bại: {response.ReasonPhrase}", Severity.Error);
+                await JSRuntime.InvokeVoidAsync("showAlert", $"Thêm vào giỏ hàng thất bại: {response.ReasonPhrase}");
             }
             response.EnsureSuccessStatusCode();
         }

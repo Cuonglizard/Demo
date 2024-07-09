@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<HttpClient>();
-builder.Services.AddMudServices(); // Thêm dòng này ?? ??ng ký d?ch v? MudBlazor
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
 
 @inject HttpClient Http
 
@@ -86,6 +87,17 @@
                 address = "HaiBATRUNg"
             };
             var response = await Http.PostAsJsonAsync("https://localhost:7054/api/Order/CreateOrder", requestData);
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeVoidAsync("showAlert", "Thanh Toán thành công");
+                await LoadOrderCountAsync();
+                await LoadProducts();
+
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("showAlert", $"Thanh Toan thất bại: {response.ReasonPhrase}");
+            }
         }
         catch (Exception ex)
         {
