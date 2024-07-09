@@ -5,11 +5,27 @@ using Common.Protobuf;
 using MicroRabbit.Domain.Core.Bus;
 using Payments.Application.Events;
 using Microsoft.EntityFrameworkCore;
-
+using Payments.Infrastructure;
 using Payments.Models;
 using Payments.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+builder.Services.AddDbContext<AppDbContext>(options =>
+
+    options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.AddApplicationServices();
 
 // Add services to the container.

@@ -1,10 +1,13 @@
 using WEBClient.Components;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddScoped<HttpClient>();
+builder.Services.AddMudServices(); // Thêm dòng này ?? ??ng ký d?ch v? MudBlazor
 
 var app = builder.Build();
 

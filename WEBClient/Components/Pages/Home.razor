@@ -1,15 +1,15 @@
-﻿@page "/"
+﻿@page "/home"
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@using MudBlazor
+@inject ISnackbar Snackbar
 
+@inject HttpClient Http
 <PageTitle>Home</PageTitle>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Grid</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         .card-img-top {
-            width: 250px;
+            width: 100%;
             height: 200px;
             object-fit: auto;
         }
@@ -20,105 +20,112 @@
             align-items : center;
         }
     </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <!-- First Row -->
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697205/cld-sample-5.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Giày Adida</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất.</p>
-                        <button class="btn btn-primary" @onclick="Buy">Buy Now</button>
-`                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697202/samples/woman-on-a-football-field.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 2</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+<div class="container mt-5">
+    <div class="row">
+        @if (products == null)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            @foreach (var product in products)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="@product.Img" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.ProductName</h5>
+                            <p class="card-text">@product.Description</p>
+                            <button class="btn btn-primary" @onclick="() => IncrementCount(product.OrderId)">Mua Ngay</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697181/samples/ecommerce/accessories-bag.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 3</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất..</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697197/samples/breakfast.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 4</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <!-- Second Row -->
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697181/samples/ecommerce/leather-bag-gray.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 5</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất..</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697175/samples/food/fish-vegetables.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 6</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất..</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697173/samples/animals/cat.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 7</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất..</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="https://res.cloudinary.com/ducsccor0/image/upload/v1718697173/samples/animals/cat.jpg" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 8</h5>
-                        <p class="card-text">Sản phẩm giày được nhà xuất bản Nhi Đồng sản xuất.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            }
+        }
     </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
 
 @code {
-    private void Buy()
-    {
-        NavigationManager.NavigateTo("/counter");
+    int currentCount = 0;
+    private List<Product> products;
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task IncrementCount(int OrderId)
+    {
+        try
+        {
+            var dateNow = DateTime.Now;
+            var requestData = new
+            {
+                OrderId = OrderId,
+                DateBuy = dateNow
+            };
+
+            var response = await Http.PostAsJsonAsync("https://localhost:7054/api/Order/addToCart", requestData);
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("Thêm vào gỏ hàng thành công!", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add($"Thêm vào giỏ hàng thất bại: {response.ReasonPhrase}", Severity.Error);
+            }
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error ordering product: {ex.Message}");
+        }
+    }
+
+    private async Task LoadProducts()
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<ProductResponse>("https://localhost:7054/api/Order/GetListProduct?isBuy=false");
+            if (response != null && response.State)
+            {
+                products = response.Data;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching products: {ex.Message}");
+        }
+    }
+    public class Product
+    {
+        public int OrderId { get; set; }
+        public decimal Price { get; set; }
+        public string ProductName { get; set; }
+        public string Description { get; set; }
+        public string Img { get; set; }
+        public int amount { get; set;  }
+    }
+    public class ProductResponse
+    {
+        public bool State { get; set; }
+        public string Message { get; set; }
+        public object Paginator { get; set; }
+        public List<Product> Data { get; set; }
+        public bool Success { get; set; }
+        public object Code { get; set; }
+    }
+    private class ApiResponse
+    {
+        public bool State { get; set; }
+        public string Message { get; set; }
+        public object Paginator { get; set; }
+        public int Data { get; set; }
+        public bool Success { get; set; }
+        public object Code { get; set; }
     }
 }

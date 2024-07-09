@@ -22,4 +22,8 @@
     <None Include="Components\Pages\Login.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="7.0.0" />
+  </ItemGroup>
+
 </Project>

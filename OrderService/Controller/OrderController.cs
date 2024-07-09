@@ -26,14 +26,75 @@ namespace OrderService
             try
             {
                 var data = await _service.CreateOrderAsync(customerOrder);
-                return new ResponseData(true,"200",data);
+                return new ResponseData(true, "200", data);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return new ResponseData(false, ex.Message);
             }
 
         }
+        [HttpGet]
+        [Route("GetCountOrder")]
+        public async Task<ResponseData> GetCountOrder()
+        {
+            try
+            {
+                var data = await _service.GetCountOrder();
+                return new ResponseData(true, "200", data);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseData(false, ex.Message);
+            }
+
+        }
+        [HttpPost]
+        [Route("addToCart")]
+        public async Task<ResponseData> AddToCart([FromBody] AddToCart_Dto data)
+        {
+            try
+            {
+                var res = await _service.AddToCart(data);
+                return new ResponseData(true, "200", res);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseData(false, ex.Message);
+            }
+
+        }
+        [HttpGet]
+        [Route("GetListProduct")]
+        public async Task<ResponseData> GetListProduct(bool isBuy)
+        {
+            try
+            {
+                var data = await _service.GetListProduct(isBuy);
+                return new ResponseData(true, "200", data);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseData(false, ex.Message);
+            }
+
+        }
+        [HttpGet]
+        [Route("GetListPayment")]
+        public async Task<ResponseData> GetListPayment()
+        {
+            try
+            {
+                var data = await _service.GetListPayment();
+                return new ResponseData(true, "200", data);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseData(false, ex.Message);
+            }
+
+        }
+
 
 
     }
