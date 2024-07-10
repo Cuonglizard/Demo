@@ -15,3 +15,4 @@ namespace Orders.Infrastructure.Enities
         public DateTime? DATECREATE { get; set; }
     }
 }
+

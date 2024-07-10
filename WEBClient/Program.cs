@@ -1,6 +1,8 @@
 using WEBClient.Components;
 using MudBlazor.Services;
 using System.Runtime.CompilerServices;
+using eShop.WebhookClient.Services;
+using eShop.WebhookClient.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddMudServices();
+builder.Services.AddSingleton<HooksRepository>();
 
 var app = builder.Build();
 
@@ -44,6 +47,7 @@ app.MapPost("/webhook", async context =>
 });
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.MapWebhookEndpoints();
 
 app.Run();
 

@@ -30,13 +30,13 @@ namespace Payments.Application.EventHandlers
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("duccuong25082001@gmail.com", "THCS Bách Khoa");
                 mail.To.Add("tranduccuong25082001@gmail.com");
-                mail.Subject = "Hóa Đơn Thanh Toán Học Phí";
+                mail.Subject = "Hóa Đơn Thanh Toán Đơn hàng";
                 mail.Body = $@"
                     <html>
                     <body>
                         <div>
                             <p>Kính gửi a/c Trần Đức Cường!</p>
-                            <p>THCS Bách Khoa xin thông báo và xác nhận a/c đã thanh toán thành công công nợ kì 20241 tại nhà trường. Email có đính kèm Hóa đơn thanh toán cho a/c.</p>
+                            <p>Chúng tôi xin thông báo và xác nhận a/c đã đặt thành công đơn hàng. Email có đính kèm Hóa đơn thanh toán cho a/c.</p>
                             <p>Chi tiết đặt tour</p>
                             <table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
                                 <tr>
@@ -56,7 +56,7 @@ namespace Payments.Application.EventHandlers
                                     <td>Đã thanh toán</td>
                                 </tr>
                             </table>
-                            <p>Chúc anh/chị học tập thật tốt!<br>
+                            <p>Chúc anh/chị một ngày mới vui vẻ!<br>
                             Mọi yêu cầu hay thắc mắc cần giải đáp xin vui lòng liên hệ tới hotline : 1900.6420</p>
                             <p>THCS Bách Khoa</p>
                         </div>
@@ -68,7 +68,7 @@ namespace Payments.Application.EventHandlers
                 // Cấu hình SMTP client và gửi email
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                 smtpClient.EnableSsl = true;
-                smtpClient.Credentials = new NetworkCredential("tranduccuong25082001@gmail.com", "jmmm");
+                smtpClient.Credentials = new NetworkCredential("duccuong25082001@gmail.comn", "ysvc zosv vdtm sgor");
                 smtpClient.Send(mail);
 
                 Console.WriteLine("Email sent successfully.");

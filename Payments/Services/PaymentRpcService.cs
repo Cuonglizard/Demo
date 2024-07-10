@@ -58,14 +58,14 @@ public class PaymentRpcService : Payments.PaymentsBase
         };
         
         _logger.LogInformation("information order: {}", payment);
-        var webhookUrl = "https://localhost:7031/webhook";
+        var webhookUrl = "https://localhost:7031/webhook-received";
         var httpClient = _httpClientFactory.CreateClient();
 
         // T?o n?i dung JSON
         var jsonBody = new
         {
-            Header = "Header",
-            Body = "HelloWebHook"
+            Payload = "Thanh toán thành công và l?u vào Db",
+            When = DateTime.UtcNow
         };
 
         // Chuy?n ??i object thành JSON

@@ -1,13 +1,16 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
-
+@using Microsoft.AspNetCore.SignalR.Client
+@using eShop.WebhookClient.Services;
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject HooksRepository HooksRepository
+@implements IDisposable
 
 <PageTitle>Counter</PageTitle>
 
 <h1>GIỎ HÀNG</h1>
-
 <style>
     .card-img-top {
         width: 100%;
@@ -50,10 +53,39 @@
 @code {
     int currentCount = 0;
     private List<Product> products;
+    private IQueryable<WebHookReceived>? messages;
+    private IDisposable? subscription;
     protected override async Task OnInitializedAsync()
     {
         await LoadOrderCountAsync();
         await LoadProducts();
+        subscription = HooksRepository.Subscribe(() => InvokeAsync(OnMessageReceivedAsync));
+        await RefreshDataAsync();
+
+    }
+    private async Task RefreshDataAsync()
+        => messages = (await HooksRepository.GetAll()).AsQueryable();
+
+
+    private async Task OnMessageReceivedAsync()
+    {
+        try
+        {
+            await RefreshDataAsync();
+            StateHasChanged();
+            var lastMessage = messages.Last();
+            await JSRuntime.InvokeVoidAsync("showAlert", $"Đây là thông báo từ webhook: {lastMessage.Data} lúc: {lastMessage.When}");
+
+        }
+        catch (Exception ex)
+        {
+            await DispatchExceptionAsync(ex);
+        }
+    }
+
+    public void Dispose()
+    {
+        subscription?.Dispose();
     }
 
     private async Task LoadOrderCountAsync()
@@ -89,7 +121,6 @@
             var response = await Http.PostAsJsonAsync("https://localhost:7054/api/Order/CreateOrder", requestData);
             if (response.IsSuccessStatusCode)
             {
-                await JSRuntime.InvokeVoidAsync("showAlert", "Thanh Toán thành công");
                 await LoadOrderCountAsync();
                 await LoadProducts();
 
