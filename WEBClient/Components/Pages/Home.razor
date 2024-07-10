@@ -8,6 +8,14 @@
 <PageTitle>Home</PageTitle>
 
     <style>
+    .product-card {
+        transition: transform 0.3s;
+    }
+
+        .product-card:hover {
+            transform: scale(1.1);
+            z-index: 1; /* Ensure the card appears above other elements */
+        }
         .card-img-top {
             width: 100%;
             height: 200px;
@@ -31,11 +39,12 @@
             @foreach (var product in products)
             {
                 <div class="col-md-3 mb-4">
-                    <div class="card">
+                    <div class="card product-card">
                         <img src="@product.Img" class="card-img-top" alt="Product Image">
                         <div class="card-body">
                             <h5 class="card-title">@product.ProductName</h5>
                             <p class="card-text">@product.Description</p>
+                            <p class="card-text" style=" color : red">Giá: @product.Price</p>
                             <button class="btn btn-primary" @onclick="() => IncrementCount(product.OrderId)">Mua Ngay</button>
                         </div>
                     </div>

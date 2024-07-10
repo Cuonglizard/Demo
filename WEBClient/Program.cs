@@ -27,24 +27,6 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-app.MapPost("/webhook", async context =>
-{
-
-    if (!context.Request.Headers.ContainsKey("Authorization"))
-    {
-        context.Response.StatusCode = 400;
-        return;
-    }
-    var apiKey = context.Request.Headers["Authorization"];
-    if (apiKey != "APIKEY")
-    {
-        context.Response.StatusCode = 401;
-        return;
-    }
-    var body = await context.Request.ReadFromJsonAsync<WebhookpayLoad>();
-    context.Response.StatusCode = 200;
-    await context.Response.WriteAsync("Webhook! ack");
-});
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 app.MapWebhookEndpoints();
