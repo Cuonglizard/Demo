@@ -24,7 +24,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/home");
+        return;
+    }
+    await next();
+});
 app.UseStaticFiles();
 app.UseAntiforgery();
 app.MapRazorComponents<App>()
